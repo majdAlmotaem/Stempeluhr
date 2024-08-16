@@ -1,73 +1,90 @@
 """
 dieses App ermöglicht den User sich ein und -auszustempeln
 """
-
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW, CENTER
 from datetime import datetime
+import mysql.connector
+from .GUI_components.login_window import login
+from .GUI_components.main_window import main_window
 
 
 class stempeluhr(toga.App):
 
     def startup(self):
-        # Hauptfenster erstellen
-        self.main_window = toga.MainWindow(title=self.name)
-
-        # Komponenten erstellen
-        name_label = toga.Label(
-            "Geben Sie Ihren Name ein: ", style=Pack(padding=(0,5))
+        # Verbindung zur MariaDB-Datenbank herstellen
+        self.conn = mysql.connector.connect(
+            host='localhost',
+            user='root',
+            password='',
+            charset='utf8mb4',
+            database='zeiterfassung'
         )
-        self.name_input = toga.TextInput(style=Pack(flex=1))
-        self.time_label = toga.Label("Aktuelle Zeit: --:--", style=Pack(padding=10))
-        self.clock_in_button = toga.Button('Kommen', on_press=self.clock_in, style=Pack(padding=10))
-        self.clock_out_button = toga.Button('Gehen', on_press=self.clock_out, style=Pack(padding=10))
+        self.cursor = self.conn.cursor()
+        self.main_window = toga.MainWindow(title='Stempeluhr')
+        self.main_window.size = (300, 500)
 
-        # Tabelle erstellen
-        self.table = toga.Table(
-            headings=['Name', 'Datum','Uhrzeit', 'Ein/Aus'], style=Pack(flex=1)
-        )
+        login.create_login_ui(self)
+         
+   
 
-        # Box erstellen und Komponenten hinzufügen
-        name_box = toga.Box(children=[name_label, self.name_input], style=Pack(direction=ROW, padding=5))
-        button_box = toga.Box(children=[self.clock_in_button, self.clock_out_button], style=Pack(direction=ROW, padding=10))
-        box = toga.Box(children=[self.time_label, name_box, button_box, self.table],
-                        style=Pack(direction=COLUMN, alignment=CENTER, padding=10))
+    def register(self,widget):
+        pass
 
-        # Box zum Hauptfenster hinzufügen
-        
-        self.main_window.content = box
-        self.main_window.show()
-
-        # Uhrzeit regelmäßig aktualisieren
-        self.update_time()
-        
-
-
-    def update_time(self):
-        current_time = datetime.now().strftime("%H:%M")
-        self.time_label.text = f"Aktuelle Zeit: {current_time}"
-        self.time_label.refresh()
-
-        
+    def get_user_info(self, vorname):
+        self.cursor.execute('SELECT nachname FROM user WHERE vorname = %s', (vorname,))
+        result = self.cursor.fetchone()
+        return result[0] if result else None
+    
     def clock_in(self, widget):
-        name = self.name_input.value
-        if name:
-            current_datetime = datetime.now()
-            date = current_datetime.strftime('%Y-%m-%d')
-            time = current_datetime.strftime('%H:%M:%S')
-            self.table.data.append((name, date, time, 'Ein'))   
-            
+        vorname = self.vorname_input.value
+        current_datetime = datetime.now()
+        date = current_datetime.strftime('%Y-%m-%d')
+        time = current_datetime.strftime('%H:%M:%S')
+        
+        # Benutzerinformationen abrufen
+        nachname = self.get_user_info(vorname)  # Nur den Nachnamen holen
 
+        if nachname:
+            # Benutzer-ID holen
+            self.cursor.execute('SELECT id FROM user WHERE vorname = %s AND nachname = %s', (vorname, nachname))
+            user_id = self.cursor.fetchone()
+            if user_id:
+                user_id = user_id[0]
+                # Daten in der Datenbank speichern
+                self.cursor.execute('INSERT INTO stempel (benutzer_id, datum, uhrzeit, typ) VALUES (%s, %s, %s, %s)',
+                                    (user_id, date, time, 'Ein'))
+                self.conn.commit()
+                self.table.data.append((vorname, nachname, date, time, 'Ein'))
+            pass
+              
     def clock_out(self, widget):
-        name = self.name_input.value
-        if name:
-            current_datetime = datetime.now()
-            date = current_datetime.strftime('%Y-%m-%d')
-            time = current_datetime.strftime('%H:%M:%S')
-            self.table.data.append((name, date, time, 'Aus'))  
-            
+        vorname = self.vorname_input.value
+        current_datetime = datetime.now()
+        date = current_datetime.strftime('%Y-%m-%d')
+        time = current_datetime.strftime('%H:%M:%S')
+        
+        # Benutzerinformationen abrufen
+        nachname = self.get_user_info(vorname)  # Nur den Nachnamen holen
 
+        if nachname:
+            # Benutzer-ID holen
+            self.cursor.execute('SELECT id FROM user WHERE vorname = %s AND nachname = %s', (vorname, nachname))
+            user_id = self.cursor.fetchone()
+            if user_id:
+                user_id = user_id[0]
+                # Daten in der Datenbank speichern
+                self.cursor.execute('INSERT INTO stempel (benutzer_id, datum, uhrzeit, typ) VALUES (%s, %s, %s, %s)',
+                                    (user_id, date, time, 'Aus'))
+                self.conn.commit()
+                self.table.data.append((vorname, nachname, date, time, 'Aus'))
+            pass  
+
+    # def load_data(self):
+    #     self.cursor.execute('SELECT name, datum, uhrzeit, typ FROM stempel')
+    #     for row in self.cursor.fetchall():
+    #         self.table.data.append(row)
 
 def main():
     return stempeluhr('Stempeluhr')
