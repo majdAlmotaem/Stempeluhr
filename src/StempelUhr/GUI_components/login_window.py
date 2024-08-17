@@ -2,21 +2,23 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW, CENTER
 from datetime import datetime
+from ..actions import login as login_action
 
-class login:
-    
 
-    def create_login_ui(self):
-            # Komponenten für das Login/Registrierungsfenster
-            self.vorname_input = toga.TextInput(placeholder="Vorname", style=Pack(padding=5))
-            self.nachname_input = toga.TextInput(placeholder="Nachname", style=Pack(padding=5))
-            self.login_button = toga.Button('Login', on_press=self.login, style=Pack(padding=10))
-            self.register_button = toga.Button('Registrieren', on_press=self.register, style=Pack(padding=10))
+def create_login_ui(main_window: toga.MainWindow):
+    # Komponenten für das Login/Registrierungsfenster
+    vorname_input = toga.TextInput(placeholder="Vorname", style=Pack(padding=5))
+    nachname_input = toga.TextInput(placeholder="Nachname", style=Pack(padding=5))
+    login_button = toga.Button('Login', style=Pack(padding=10))
+    login_button.on_press = lambda widget: login_action(vorname_input.value, main_window)   
+    register_button = toga.Button('Registrieren', style=Pack(padding=10))
+    register_button.on_press = lambda widget: register(login, widget)
+    # Layout für das Login/Registrierungsfenster
+    login_box = toga.Box(
+        children=[vorname_input, nachname_input, login_button, register_button],
+        style=Pack(direction=COLUMN, alignment=CENTER, padding=20)
+    )
+    return login_box
 
-            # Layout für das Login/Registrierungsfenster
-            login_box = toga.Box(
-                children=[self.vorname_input, self.nachname_input, self.login_button, self.register_button],
-                style=Pack(direction=COLUMN, alignment=CENTER, padding=20)
-            )
-            self.main_window.content = login_box
-
+def register(self,widget):
+    pass

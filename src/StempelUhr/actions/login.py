@@ -1,12 +1,17 @@
- 
+import toga
+import mysql.connector
+from StempelUhr.GUI_components.main_window import create_main_ui
+from StempelUhr.services import mysql_verbindung
 
-def login(self, widget):
-    vorname = self.vorname_input.value
+
+def login(vorname, main_window: toga.MainWindow):
+    _, cursor = mysql_verbindung()
     # Überprüfen, ob der Benutzer existiert
-    self.cursor.execute('SELECT vorname FROM user WHERE vorname = %s', (vorname,))
-    user = self.cursor.fetchone()
+    cursor.execute('SELECT vorname FROM user WHERE vorname = %s', (vorname,))
+    user = cursor.fetchone()
     
     if user and user[0] == vorname:
-        main_window.create_main_ui(self)
+        main_window.content = create_main_ui(vorname)
+
     else:
         pass
