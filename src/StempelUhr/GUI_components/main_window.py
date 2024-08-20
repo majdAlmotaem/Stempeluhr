@@ -17,9 +17,9 @@ def create_main_ui(vorname):
     current_time = datetime.now().strftime("%H:%M")
     # Weitere Komponenten erstellen
     time_label = toga.Label(f"Aktuelle Zeit: {current_time}", style=Pack(padding=10))
-    clock_in_button = toga.Button('Kommen', on_press=clock_in, style=Pack(padding=10))
-    clock_in_button.on_press = lambda widget: clock_in(widget)
-    clock_out_button = toga.Button('Gehen', on_press=clock_out, style=Pack(padding=10))
+    clock_in_button = toga.Button('Kommen', style=Pack(padding=10))
+    clock_in_button.on_press = lambda widget: clock_in(widget, vorname, table)
+    clock_out_button = toga.Button('Gehen', style=Pack(padding=10))
     clock_out_button.on_press = lambda widget: clock_out(widget)
 
     # Tabelle erstellen

@@ -17,12 +17,7 @@ class stempeluhr(toga.App):
         
         self.main_window.content= create_login_ui(self.main_window)
         
-    
-    def get_user_info(self, vorname):
-        self.cursor.execute('SELECT nachname FROM user WHERE vorname = %s', (vorname,))
-        result = self.cursor.fetchone()
-        return result[0] if result else None
-    
+
 
   
             
