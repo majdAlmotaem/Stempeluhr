@@ -2,8 +2,8 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW, CENTER
 from datetime import datetime
-from ..actions import clock_in
-from ..actions import clock_out
+from StempelUhr.actions.clock_in import clock_in
+from StempelUhr.actions.clock_out import clock_out
 
 def create_main_ui(vorname):
     title = 'Zeiterfassung'
@@ -20,7 +20,7 @@ def create_main_ui(vorname):
     clock_in_button = toga.Button('Kommen', style=Pack(padding=10))
     clock_in_button.on_press = lambda widget: clock_in(widget, vorname, table)
     clock_out_button = toga.Button('Gehen', style=Pack(padding=10))
-    clock_out_button.on_press = lambda widget: clock_out(widget)
+    clock_out_button.on_press = lambda widget: clock_out(widget, vorname, table)
 
     # Tabelle erstellen
     table = toga.Table(

@@ -9,7 +9,6 @@ def clock_in(widget, vorname, table):
     time = current_datetime.strftime('%H:%M:%S')
     conn , cursor = mysql_verbindung()
     
-    
     # Benutzerinformationen abrufen
     nachname = get_user_info(vorname)  # Nur den Nachnamen holen
 

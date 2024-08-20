@@ -1,9 +1,9 @@
 from datetime import datetime
 from StempelUhr.services import mysql_verbindung
+from StempelUhr.utils import get_user_info
 
 
-def clock_out(widget):
-    vorname = vorname_input.value
+def clock_out(widget, vorname, table):
     current_datetime = datetime.now()
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
@@ -24,3 +24,6 @@ def clock_out(widget):
             conn.commit()
             table.data.append((vorname, nachname, date, time, 'Aus'))
         pass  
+    # Schließen Sie die Datenbankverbindung
+    cursor.close()
+    conn.close()

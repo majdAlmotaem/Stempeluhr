@@ -1,5 +1,4 @@
 import toga
-import mysql.connector
 from StempelUhr.GUI_components.main_window import create_main_ui
 from StempelUhr.services import mysql_verbindung
 
