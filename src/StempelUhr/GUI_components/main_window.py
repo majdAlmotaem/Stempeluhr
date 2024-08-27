@@ -5,9 +5,9 @@ from datetime import datetime
 from StempelUhr.actions.clock_in import clock_in
 from StempelUhr.actions.clock_out import clock_out
 
-def create_main_ui(vorname):
-    title = 'Zeiterfassung'
-    size = (400, 600)  # Fenstergröße anpassen
+def create_main_ui(main_window: toga.MainWindow, vorname):
+    main_window.title = 'Zeiterfassung'
+    main_window.size = (400, 600)  # Fenstergröße anpassen
     
     # Begrüßung erstellen und zentrieren
     greeting_label = toga.Label(

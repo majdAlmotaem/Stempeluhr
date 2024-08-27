@@ -10,7 +10,7 @@ def login(vorname, main_window: toga.MainWindow):
     user = cursor.fetchone()
     
     if user and user[0] == vorname:
-        main_window.content = create_main_ui(vorname)
+        main_window.content = create_main_ui(main_window, vorname)
 
     else:
         pass

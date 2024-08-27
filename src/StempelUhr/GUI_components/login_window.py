@@ -12,7 +12,7 @@ def create_login_ui(main_window: toga.MainWindow):
     login_button = toga.Button('Login', style=Pack(padding=10))
     login_button.on_press = lambda widget: login_action(vorname_input.value, main_window)   
     register_button = toga.Button('Registrieren', style=Pack(padding=10))
-    register_button.on_press = lambda widget: register(login, widget)
+    register_button.on_press = lambda widget: register( widget)
     # Layout für das Login/Registrierungsfenster
     login_box = toga.Box(
         children=[vorname_input, nachname_input, login_button, register_button],
@@ -20,5 +20,5 @@ def create_login_ui(main_window: toga.MainWindow):
     )
     return login_box
 
-def register(self,widget):
+def register(widget):
     pass
