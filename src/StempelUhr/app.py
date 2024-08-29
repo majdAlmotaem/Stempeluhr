@@ -15,7 +15,11 @@ class stempeluhr(toga.App):
         self.main_window.size = (300, 500)
         
         self.main_window.content= create_login_ui(self.main_window)
-
+        self.main_window.show()
+    # def load_data(self):
+    #     self.cursor.execute('SELECT name, datum, uhrzeit, typ FROM stempel')
+    #     for row in self.cursor.fetchall():
+    #         self.table.data.append(row)
     # def load_data(self):
     #     self.cursor.execute('SELECT name, datum, uhrzeit, typ FROM stempel')
     #     for row in self.cursor.fetchall():
