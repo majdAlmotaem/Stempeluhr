@@ -1,6 +1,7 @@
 import toga
 from StempelUhr.GUI_components.main_window import create_main_ui
 from StempelUhr.services import mysql_verbindung
+from StempelUhr.utils.message_alert import show_alert
 
 
 def login(vorname, main_window: toga.MainWindow):
@@ -13,4 +14,4 @@ def login(vorname, main_window: toga.MainWindow):
         main_window.content = create_main_ui(main_window, vorname)
 
     else:
-        pass
+        show_alert(main_window, "Fehler", "Sie sind nicht registriert!")
