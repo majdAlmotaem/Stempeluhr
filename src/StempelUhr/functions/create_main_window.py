@@ -2,12 +2,11 @@ import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW, CENTER
 from datetime import datetime
-from StempelUhr.actions.clock_in import clock_in
-from StempelUhr.actions.clock_out import clock_out
+from .set_clock_in import set_clock_in
+from .set_clock_out import set_clock_out
 
-def create_main_ui(main_window: toga.MainWindow, vorname):
-    main_window.title = 'Zeiterfassung'
-    main_window.size = (400, 600)  # Fenstergröße anpassen
+def create_main_window(vorname):
+
     
     # Begrüßung erstellen und zentrieren
     greeting_label = toga.Label(
@@ -18,9 +17,9 @@ def create_main_ui(main_window: toga.MainWindow, vorname):
     # Weitere Komponenten erstellen
     time_label = toga.Label(f"Aktuelle Zeit: {current_time}", style=Pack(padding=10))
     clock_in_button = toga.Button('Kommen', style=Pack(padding=10))
-    clock_in_button.on_press = lambda widget: clock_in(widget, vorname, table)
+    clock_in_button.on_press = lambda widget: set_clock_in(widget, vorname, table)
     clock_out_button = toga.Button('Gehen', style=Pack(padding=10))
-    clock_out_button.on_press = lambda widget: clock_out(widget, vorname, table)
+    clock_out_button.on_press = lambda widget: set_clock_out(widget, vorname, table)
 
     # Tabelle erstellen
     table = toga.Table(

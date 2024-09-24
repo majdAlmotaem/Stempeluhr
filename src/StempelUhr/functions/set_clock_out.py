@@ -1,9 +1,9 @@
 from datetime import datetime
-from StempelUhr.services import mysql_verbindung
-from StempelUhr.utils import get_user_info
+from .mysql_verbindung import *
+from .get_user_info import get_user_info
 
-   
-def clock_in(widget, vorname, table):
+
+def set_clock_out(widget, vorname, table):
     current_datetime = datetime.now()
     date = current_datetime.strftime('%Y-%m-%d')
     time = current_datetime.strftime('%H:%M:%S')
@@ -20,10 +20,10 @@ def clock_in(widget, vorname, table):
             user_id = user_id[0]
             # Daten in der Datenbank speichern
             cursor.execute('INSERT INTO stempel (benutzer_id, datum, uhrzeit, typ) VALUES (%s, %s, %s, %s)',
-                                (user_id, date, time, 'Ein'))
+                                (user_id, date, time, 'Aus'))
             conn.commit()
-            table.data.append((vorname, nachname, date, time, 'Ein'))
-        pass
+            table.data.append((vorname, nachname, date, time, 'Aus'))
+        pass  
     # Schließen Sie die Datenbankverbindung
     cursor.close()
     conn.close()
