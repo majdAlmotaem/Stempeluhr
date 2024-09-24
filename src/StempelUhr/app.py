@@ -4,16 +4,23 @@ dieses App ermöglicht den User sich ein und -auszustempeln
 import toga
 from toga.style import Pack
 from toga.style.pack import COLUMN, ROW, CENTER
-from .GUI_components.login_window import create_login_ui
+from .functions.create_starter_window import create_starter_window
+from .classes.state import state
 
 
 
 class stempeluhr(toga.App):
 
     def startup(self):
+        # Main Window erstellen
         self.main_window = toga.MainWindow(title='Stempeluhr')
         self.main_window.size = (300, 500)
-        self.main_window.content= create_login_ui(self.main_window)
+        
+        # Main Window im Singleton speichern
+        state.main_window = self.main_window
+        
+        # Starter Window erzeugen
+        self.main_window.content = create_starter_window()
         self.main_window.show()
 
 
