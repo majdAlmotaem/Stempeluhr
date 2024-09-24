@@ -12,8 +12,10 @@ def register(vorname, nachname,widget):
 
     # Überprüfen, ob der Vorname und Nachname bereits existieren
     cursor.execute('SELECT * FROM user WHERE vorname = %s AND nachname = %s', (vorname, nachname))
+    # Überprüfen, ob der Vorname und Nachname bereits existieren
     user = cursor.fetchone()
-
+    
+    # Wenn der Benutzer bereits existiert, zeige eine Fehlermeldung
     if user:
         # Wenn der Benutzer bereits existiert, zeige eine Fehlermeldung
         show_alert(widget.window, "Registrierung fehlgeschlagen", "Benutzer existiert bereits!")
