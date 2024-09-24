@@ -1,4 +1,4 @@
-from StempelUhr.services import mysql_verbindung
+from .mysql_verbindung import mysql_verbindung
    
 
 

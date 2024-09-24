@@ -1,5 +1,5 @@
 import toga
-from StempelUhr.services import mysql_verbindung
+from .mysql_verbindung import mysql_verbindung
 
 def register(vorname, nachname,widget):
     conn, cursor = mysql_verbindung()
