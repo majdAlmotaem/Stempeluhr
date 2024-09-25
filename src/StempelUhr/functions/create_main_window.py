@@ -4,7 +4,8 @@ from toga.style.pack import COLUMN, ROW, CENTER
 from datetime import datetime
 from .set_clock_in import set_clock_in
 from .set_clock_out import set_clock_out
-from .logout import logout  # Direktimport der Logout-Funktion
+from .logout import logout
+from .set_user_history import set_user_history  
 
 def create_main_window(vorname):
 
@@ -29,7 +30,8 @@ def create_main_window(vorname):
     table = toga.Table(
         headings=['Vorname', 'Nachname', 'Datum', 'Uhrzeit', 'Ein/Aus'], style=Pack(flex=1)
     )
-
+    #user historie in Tabelle hinzufügen
+    set_user_history(vorname, table)
     # Box erstellen und Komponenten hinzufügen
     button_box = toga.Box(children=[clock_in_button, clock_out_button, logout_button], style=Pack(direction=ROW, padding=10))
     box = toga.Box(children=[greeting_label, time_label, button_box, table],
